@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/folderPage">
+
+    <fragment
+        android:id="@+id/folderPage"
+        android:name="com.example.media.view.folder.FolderPage"
+        android:label="FolderPage"
+        tools:layout="@layout/folder_page_fragment">
+        <action
+            android:id="@+id/action_folderPage_to_videoListPage"
+            app:destination="@id/videoListPage" />
+    </fragment>
+    <fragment
+        android:id="@+id/videoListPage"
+        android:name="com.example.media.view.video_list.VideoListPage"
+        android:label="video_list_page_fragment"
+        tools:layout="@layout/video_list_page_fragment" />
+</navigation>
