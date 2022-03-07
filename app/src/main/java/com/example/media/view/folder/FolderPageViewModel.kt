@@ -22,7 +22,7 @@ class FolderPageViewModel(application: Application) : AndroidViewModel(applicati
     }
     val folder = MutableLiveData<Resource<List<Folder>>>()
 
-    private fun loadAllVideoFolders() {
+     fun loadAllVideoFolders() {
         try {
             folder.postValue(Resource.Loading())
             val collection =

@@ -1,32 +1,34 @@
 package com.example.media.view.video_list
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.content.Intent
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import com.example.media.R
+import androidx.navigation.fragment.navArgs
+import com.example.media.base.BaseFragment
+import com.example.media.databinding.VideoListPageFragmentBinding
+import com.example.media.utility.Constant
+import com.example.media.view.player.PlayerPage
 
-class VideoListPage : Fragment() {
+class VideoListPage : BaseFragment<VideoListPageFragmentBinding>() {
 
-    companion object {
-        fun newInstance() = VideoListPage()
+
+    private val videoListAdapter = VideoListAdapter {
+        val intent = Intent(requireContext(), PlayerPage::class.java)
+        intent.putExtra(Constant.MEDIA_FILE, it)
+        startActivity(intent)
     }
 
-    private lateinit var viewModel: VideoListPageViewModel
+    private val navArgs by navArgs<VideoListPageArgs>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.video_list_page_fragment, container, false)
+    override fun getFragmentBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ) = VideoListPageFragmentBinding.inflate(inflater, container, false)
+
+    override fun setUpViews() {
+        binding.videList.adapter = videoListAdapter
+        videoListAdapter.updateData(navArgs.mediaFileList.toList())
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(VideoListPageViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
 
 }

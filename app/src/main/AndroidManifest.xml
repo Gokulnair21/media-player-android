@@ -16,6 +16,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Media">
         <activity
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:theme="@style/Theme.PlayerActivity"
+            android:name=".view.player.PlayerPage"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

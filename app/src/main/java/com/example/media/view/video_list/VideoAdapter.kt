@@ -5,10 +5,12 @@ import android.media.browse.MediaBrowser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.NonNull
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.media.data.model.MediaFile
 import com.example.media.databinding.VideoCardBinding
+import java.util.concurrent.TimeUnit
 
 class VideoListAdapter(private val onItemClicked: (MediaFile) -> Unit) :
     RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
@@ -27,7 +29,8 @@ class VideoListAdapter(private val onItemClicked: (MediaFile) -> Unit) :
 
         fun bindData(videoItem: MediaFile) {
             binding.videoTitle.text = videoItem.name
-            binding.videoDuration.text = videoItem.duration.toString()
+
+            binding.videoDuration.text =  convertDurationToTime(videoItem.duration)
             binding.thumbnail.setImageBitmap(videoItem.thumbnail)
         }
 
@@ -52,5 +55,21 @@ class VideoListAdapter(private val onItemClicked: (MediaFile) -> Unit) :
         data.clear()
         data.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun convertDurationToTime(duration:Long):String{
+       val hour=TimeUnit.MILLISECONDS.toHours(duration)
+        val minute=TimeUnit.MILLISECONDS.toMinutes(duration)
+        val zero=0.toLong()
+        val second=TimeUnit.MILLISECONDS.toSeconds(duration)
+        return if(hour==zero){
+            if(minute==zero){
+                "00:$second"
+            }else{
+                "$minute:$second"
+            }
+        }else{
+            "$hour:$minute:$second"
+        }
     }
 }

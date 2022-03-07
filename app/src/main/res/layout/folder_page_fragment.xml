@@ -6,15 +6,35 @@
     <data>
 
     </data>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.folder.FolderPage">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
         android:id="@+id/folderList"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:itemCount="5"
         tools:listitem="@layout/folder_card"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".view.folder.FolderPage">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+       />
+    <com.example.media.view.custom_views.LoadingView
+        app:showLoadingMessage="false"
+        android:gravity="center"
+        android:id="@+id/loading"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="0dp"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-    </androidx.recyclerview.widget.RecyclerView>
 </layout>

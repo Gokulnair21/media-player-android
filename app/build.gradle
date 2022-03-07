@@ -54,4 +54,7 @@ dependencies {
 
     implementation "androidx.navigation:navigation-fragment:$nav_version"
     implementation "androidx.navigation:navigation-ui:$nav_version"
+
+    implementation 'com.google.android.exoplayer:exoplayer:2.17.0'
+
 }

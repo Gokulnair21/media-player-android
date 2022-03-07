@@ -8,7 +8,9 @@
 
     <com.google.android.material.card.MaterialCardView
         app:cardElevation="0dp"
-        app:contentPadding="3dp"
+        app:contentPaddingRight="3dp"
+        app:contentPaddingTop="3dp"
+        app:contentPaddingBottom="3dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <LinearLayout
@@ -16,8 +18,8 @@
             android:layout_height="wrap_content">
             <ImageView
                 android:src="@drawable/folder"
-                android:layout_width="90dp"
-                android:layout_height="70dp"/>
+                android:layout_width="75dp"
+                android:layout_height="75dp"/>
            <LinearLayout
                android:layout_marginEnd="5dp"
                android:layout_weight="1"
@@ -26,11 +28,13 @@
                android:layout_width="0dp"
                android:layout_height="wrap_content">
                <TextView
+                   android:ellipsize="marquee"
                    android:textSize="15sp"
                    android:textStyle="bold"
                    android:id="@+id/folderName"
                    android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"/>
+                   android:layout_height="wrap_content"
+                   android:singleLine="true" />
                <Space
                    android:layout_width="wrap_content"
                    android:layout_height="10dp"/>

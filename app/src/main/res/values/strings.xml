@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Media</string>
     <string name="thumbnail">Thumbnail</string>
+    <string name="number_of_videos">%1$d Videos</string>
+    <string name="refresh">Refresh</string>
 </resources>
