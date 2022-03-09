@@ -3,4 +3,5 @@
     <string name="thumbnail">Thumbnail</string>
     <string name="number_of_videos">%1$d Videos</string>
     <string name="refresh">Refresh</string>
+    <string name="folder">Folder</string>
 </resources>
