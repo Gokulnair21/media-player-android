@@ -1,10 +1,7 @@
 package com.example.media.view.folder
 
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
 import android.view.*
 import android.widget.PopupMenu
-import androidx.fragment.app.Fragment
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -19,7 +16,7 @@ class FolderPage : BaseFragment<FolderPageFragmentBinding>() {
 
     private val folderAdapter = FolderAdapter {
         val action = FolderPageDirections.actionFolderPageToVideoListPage(
-            it.mediaData.toTypedArray(),
+            it.videoData.toTypedArray(),
             it.name
         )
         findNavController().navigate(action)

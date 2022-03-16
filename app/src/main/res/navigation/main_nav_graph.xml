@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_nav_graph"
-    app:startDestination="@id/folderPage">
+    app:startDestination="@id/audioListPage">
 
     <fragment
         android:id="@+id/folderPage"
@@ -18,12 +18,17 @@
         android:id="@+id/videoListPage"
         android:name="com.example.media.view.video_list.VideoListPage"
         android:label="{folderName}"
-        tools:layout="@layout/video_list_page_fragment" >
+        tools:layout="@layout/video_list_page_fragment">
         <argument
             android:name="mediaFileList"
-            app:argType="com.example.media.data.model.MediaFile[]" />
+            app:argType="com.example.media.data.model.VideoFile[]" />
         <argument
             android:name="folderName"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/audioListPage"
+        android:name="com.example.media.view.audio_list.AudioListPage"
+        android:label="@string/music"
+        tools:layout="@layout/audio_list_page_fragment" />
 </navigation>

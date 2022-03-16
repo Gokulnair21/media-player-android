@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.media.R
 import com.example.media.data.model.Folder
-import com.example.media.data.model.MediaFile
 import com.example.media.databinding.FolderCardBinding
 
 
@@ -28,11 +27,11 @@ class FolderAdapter(private val onItemClicked: (Folder) -> Unit) :
 
         fun bindData(folder: Folder) {
             binding.folderName.text = folder.name
-            binding.folderSize.text = binding.root.context.getString(R.string.number_of_videos,folder.mediaData.size)
+            binding.folderSize.text = binding.root.context.getString(R.string.number_of_videos,folder.videoData.size)
         }
 
         override fun onClick(p0: View?) {
-            onItemClicked(data[adapterPosition])
+            onItemClicked(data[absoluteAdapterPosition])
         }
     }
 

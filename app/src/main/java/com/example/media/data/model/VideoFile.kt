@@ -6,7 +6,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class MediaFile(
+data class VideoFile(
     val name: String,
     val fileUri: Uri,
     val duration: Long,

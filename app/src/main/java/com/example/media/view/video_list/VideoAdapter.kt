@@ -1,25 +1,24 @@
 package com.example.media.view.video_list
 
 import android.annotation.SuppressLint
-import android.media.browse.MediaBrowser
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.NonNull
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
-import com.example.media.data.model.MediaFile
+import com.example.media.data.model.VideoFile
 import com.example.media.databinding.VideoCardBinding
+import com.example.media.utility.toDurationFormat
+import com.example.media.utility.toDurationFormat
 import java.util.concurrent.TimeUnit
 
-class VideoListAdapter(private val onItemClicked: (MediaFile, Int) -> Unit) :
+class VideoListAdapter(private val onItemClicked: (VideoFile, Int) -> Unit) :
     RecyclerView.Adapter<VideoListAdapter.ViewHolder>() {
 
-    private val data: ArrayList<MediaFile> = arrayListOf()
+    private val data: ArrayList<VideoFile> = arrayListOf()
 
     inner class ViewHolder(
         private val binding: VideoCardBinding,
-        private val onItemClicked: (MediaFile, Int) -> Unit
+        private val onItemClicked: (VideoFile, Int) -> Unit
     ) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
 
@@ -27,10 +26,10 @@ class VideoListAdapter(private val onItemClicked: (MediaFile, Int) -> Unit) :
             binding.root.setOnClickListener(this)
         }
 
-        fun bindData(videoItem: MediaFile) {
+        fun bindData(videoItem: VideoFile) {
             binding.videoTitle.text = videoItem.name
 
-            binding.videoDuration.text = convertDurationToTime(videoItem.duration)
+            binding.videoDuration.text = videoItem.duration.toDurationFormat()
             binding.thumbnail.setImageBitmap(videoItem.thumbnail)
         }
 
@@ -51,25 +50,11 @@ class VideoListAdapter(private val onItemClicked: (MediaFile, Int) -> Unit) :
     override fun getItemCount() = data.size
 
     @SuppressLint("NotifyDataSetChanged")//Dataset is repopulated
-    fun updateData(list: List<MediaFile>) {
+    fun updateData(list: List<VideoFile>) {
         data.clear()
         data.addAll(list)
         notifyDataSetChanged()
     }
 
-    fun convertDurationToTime(duration: Long): String {
-        val hour = TimeUnit.MILLISECONDS.toHours(duration)
-        val minute = TimeUnit.MILLISECONDS.toMinutes(duration)
-        val zero = 0.toLong()
-        val second = TimeUnit.MILLISECONDS.toSeconds(duration)
-        return if (hour == zero) {
-            if (minute == zero) {
-                "00:$second"
-            } else {
-                "$minute:$second"
-            }
-        } else {
-            "$hour:$minute:$second"
-        }
-    }
+
 }

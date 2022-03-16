@@ -3,14 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android projects/media/app/src/main/res/drawable/ic_baseline_music_note_24.xml" value="0.1" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/activity_main.xml" value="0.11458333333333333" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/activity_player_page.xml" value="0.1361111111111111" />
+        <entry key="..\:/android projects/media/app/src/main/res/layout/audio_card.xml" value="0.1078125" />
+        <entry key="..\:/android projects/media/app/src/main/res/layout/audio_controller.xml" value="0.17" />
+        <entry key="..\:/android projects/media/app/src/main/res/layout/audio_list_page_fragment.xml" value="0.1078125" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/custom_player_controller_layout.xml" value="0.1078125" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/folder_card.xml" value="0.1" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/folder_page_fragment.xml" value="0.15" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/loading.xml" value="0.14895833333333333" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/video_card.xml" value="0.1" />
         <entry key="..\:/android projects/media/app/src/main/res/layout/video_list_page_fragment.xml" value="0.11458333333333333" />
+        <entry key="..\:/android projects/media/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.128125" />
         <entry key="..\:/android projects/media/app/src/main/res/menu/folder_page_menu.xml" value="0.14895833333333333" />
       </map>
     </option>

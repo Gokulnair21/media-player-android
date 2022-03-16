@@ -2,16 +2,14 @@ package com.example.media.view.folder
 
 import android.app.Application
 import android.content.ContentUris
-import android.database.Cursor
 import android.graphics.BitmapFactory
 import android.os.Build
 import android.provider.MediaStore
 import android.util.Size
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import com.example.media.data.model.Folder
-import com.example.media.data.model.MediaFile
+import com.example.media.data.model.VideoFile
 import com.example.media.utility.Resource
 import com.example.media.utility.containsBucket
 
@@ -73,9 +71,9 @@ class FolderPageViewModel(application: Application) : AndroidViewModel(applicati
                         )
                     }
                     val index = dataList.containsBucket(bucketName)
-                    val mediaFile = MediaFile(name, fileUri, duration, thumbnail)
+                    val mediaFile = VideoFile(name, fileUri, duration, thumbnail)
                     if (index != -1) {
-                        dataList[index].mediaData.add(mediaFile)
+                        dataList[index].videoData.add(mediaFile)
                     } else {
                         dataList.add(Folder(bucketName, arrayListOf(mediaFile)))
                     }

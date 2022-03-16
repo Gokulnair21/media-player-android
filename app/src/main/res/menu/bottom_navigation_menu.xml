@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/audioListPage"
+        android:icon="@drawable/ic_baseline_music_note_24"
+        android:title="@string/music" />
+    <item
+        android:id="@+id/folderPage"
+        android:icon="@drawable/ic_baseline_live_tv_24"
+        android:title="@string/videos" />
+</menu>

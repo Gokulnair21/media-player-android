@@ -4,21 +4,18 @@ import android.content.pm.ActivityInfo
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.media.R
-import com.example.media.data.model.MediaFile
+import com.example.media.data.model.VideoFile
 import com.example.media.databinding.ActivityPlayerPageBinding
 import com.example.media.utility.Constant
 import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.MediaItem
 import com.google.android.exoplayer2.Player
-import com.google.android.exoplayer2.TracksInfo
 import com.google.android.exoplayer2.source.MediaSource
 import com.google.android.exoplayer2.source.ProgressiveMediaSource
 import com.google.android.exoplayer2.upstream.DefaultDataSource
@@ -73,7 +70,7 @@ class PlayerPage : AppCompatActivity(), Player.Listener {
 
     override fun onMediaItemTransition(mediaItem: MediaItem?, reason: Int) {
         super.onMediaItemTransition(mediaItem, reason)
-        intent.getParcelableArrayListExtra<MediaFile>(Constant.MEDIA_FILE)?.let {
+        intent.getParcelableArrayListExtra<VideoFile>(Constant.MEDIA_FILE)?.let {
             binding.player.findViewById<TextView>(R.id.videoTitle).text =it[player.currentMediaItemIndex].name
 
         }
@@ -121,7 +118,7 @@ class PlayerPage : AppCompatActivity(), Player.Listener {
     private fun initializePlayer() {
         player = ExoPlayer.Builder(this).build()
         binding.player.player = player
-        intent.getParcelableArrayListExtra<MediaFile>(Constant.MEDIA_FILE)?.let {
+        intent.getParcelableArrayListExtra<VideoFile>(Constant.MEDIA_FILE)?.let {
             player.setMediaSources(getMediaSourceFromURI(it.toList()))
             if (currentPosition == 0.toLong()) {
                 player.seekTo(
@@ -144,7 +141,7 @@ class PlayerPage : AppCompatActivity(), Player.Listener {
         player.release()
     }
 
-    private fun getMediaSourceFromURI(list: List<MediaFile>): ArrayList<MediaSource> {
+    private fun getMediaSourceFromURI(list: List<VideoFile>): ArrayList<MediaSource> {
         val dataSource = DefaultDataSource.Factory(this)
         val mediaSourceList = ArrayList<MediaSource>()
         list.forEach {

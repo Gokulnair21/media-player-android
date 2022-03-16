@@ -4,4 +4,7 @@
     <string name="number_of_videos">%1$d Videos</string>
     <string name="refresh">Refresh</string>
     <string name="folder">Folder</string>
+    <string name="audio_image">Audio Image</string>
+    <string name="music">Musics</string>
+    <string name="videos">Videos</string>
 </resources>
