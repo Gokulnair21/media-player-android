@@ -39,7 +39,7 @@ class AudioListPageViewModel(application: Application) : AndroidViewModel(applic
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ARTIST,
 
-            )
+                )
             val sortOrder = "${MediaStore.Audio.Media.DISPLAY_NAME} ASC"
             val query = contentResolver.query(
                 collection,
