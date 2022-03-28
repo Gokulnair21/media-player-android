@@ -19,7 +19,11 @@
         <service
             android:name=".service.MusicService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+        </service>
 
         <activity
             android:name=".view.player.PlayerPage"

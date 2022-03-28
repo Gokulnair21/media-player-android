@@ -1,11 +1,19 @@
 package com.example.media.view.audio_list
 
 import android.annotation.SuppressLint
+import android.content.ContentResolver
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
+import android.util.Size
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.model.UriLoader
 import com.example.media.R
 import com.example.media.data.model.MusicFile
 import com.example.media.data.model.VideoFile
@@ -13,7 +21,10 @@ import com.example.media.databinding.AudioCardBinding
 import com.example.media.utility.toDurationFormat
 import kotlin.time.measureTimedValue
 
-class AudioAdapter(private val onItemClicked: (MusicFile) -> Unit) :
+class AudioAdapter(
+    private val contentResolver: ContentResolver,
+    private val onItemClicked: (MusicFile) -> Unit
+) :
     RecyclerView.Adapter<AudioAdapter.ViewHolder>() {
 
     private val dataList = ArrayList<MusicFile>()
@@ -29,10 +40,7 @@ class AudioAdapter(private val onItemClicked: (MusicFile) -> Unit) :
 
         fun bindData(musicFile: MusicFile) {
             binding.audioTitle.text = musicFile.name
-            Glide.with(binding.root.context).load(musicFile.thumbnail)
-                .error(R.drawable.ic_baseline_music_note_24)
-                .centerCrop()
-                .into(binding.audioImage)
+            binding.audioImage.setBackgroundColor(binding.root.resources.getColor(R.color.blue))
             binding.audioArtist.text = musicFile.artistName
             binding.audioDuration.text = "\u00b7 ${musicFile.duration.toDurationFormat()} \u00b7"
         }

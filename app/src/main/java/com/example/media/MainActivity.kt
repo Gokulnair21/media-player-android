@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
 
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
@@ -63,7 +61,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             binding.bottomNavigationView.visibility = View.GONE
         }
     }
-
 
 
 }

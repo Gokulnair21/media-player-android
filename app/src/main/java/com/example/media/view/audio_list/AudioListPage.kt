@@ -2,60 +2,136 @@ package com.example.media.view.audio_list
 
 import android.content.ComponentName
 import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
-import androidx.lifecycle.ViewModelProvider
+import android.content.SharedPreferences
+import android.net.Uri
 import android.os.Bundle
-import android.os.IBinder
-import androidx.fragment.app.Fragment
+import android.support.v4.media.MediaBrowserCompat
+import android.support.v4.media.MediaMetadataCompat
+import android.support.v4.media.session.MediaControllerCompat
+import android.support.v4.media.session.PlaybackStateCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.content.res.AppCompatResources
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.palette.graphics.Palette
 import com.bumptech.glide.Glide
 import com.example.media.R
 import com.example.media.base.BaseFragment
+import com.example.media.data.model.MusicFile
 import com.example.media.databinding.AudioListPageFragmentBinding
 import com.example.media.service.MusicService
+import com.example.media.utility.Constant
 import com.example.media.utility.Resource
 import com.example.media.view.custom_views.AudioControllerView
+import com.google.gson.Gson
 
-class AudioListPage : BaseFragment<AudioListPageFragmentBinding>(),
-    AudioControllerView.OnClickListener {
+class AudioListPage : BaseFragment<AudioListPageFragmentBinding>() {
 
-    private lateinit var musicService: MusicService
-    private var musicServiceBound = false
-    private val viewModel by viewModels<AudioListPageViewModel>()
-    private val audioControlViewModel by activityViewModels<AudioControlViewModel>()
 
-    private val audioAdapter = AudioAdapter {
-        if (musicServiceBound) {
-            musicService.loadMusicFile(it)
-        } else {
-            requireActivity().bindService(
-                Intent(
-                    requireContext(),
-                    MusicService::class.java
-                ),
-                serviceConnection,
-                Context.BIND_AUTO_CREATE
+    private val viewModel by viewModels<AudioListPageViewModel> {
+        AudioListPageViewModel.Factory(
+            requireContext().contentResolver, requireContext().getSharedPreferences(
+                Constant.MEDIA_DB, Context.MODE_PRIVATE
             )
+        )
+    }
+
+    private val audioAdapter: AudioAdapter by lazy {
+        AudioAdapter(requireContext().contentResolver) {
+            val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+            val extra = Bundle()
+            extra.putParcelable(Constant.MUSIC_FILE, it)
+            mediaController.transportControls.playFromUri(Uri.parse(it.fileUri), extra)
+        }
+    }
+    private val sharedPreferences: SharedPreferences by lazy {
+        requireContext().getSharedPreferences(Constant.MEDIA_DB, Context.MODE_PRIVATE)
+    }
+
+    private lateinit var mediaBrowser: MediaBrowserCompat
+
+    private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
+
+
+        override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
+            state?.let {
+                when (it.state) {
+                    PlaybackStateCompat.STATE_PAUSED -> {
+                        binding.audioController.showPlayButton = true
+                    }
+                    PlaybackStateCompat.STATE_PLAYING -> {
+                        if (binding.audioController.visibility == View.GONE) {
+                            binding.audioController.visibility = View.VISIBLE
+                        }
+                        binding.audioController.showPauseButton = true
+                    }
+
+                }
+            }
+
+        }
+
+        override fun onSessionDestroyed() {
+            super.onSessionDestroyed()
+            mediaBrowser.disconnect()
         }
     }
 
-    private val serviceConnection = object : ServiceConnection {
-        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            val binder = service as MusicService.LocalBinder
-            musicService = binder.getService()
-            musicServiceBound = true
+
+    private val mediaConnectionCallBack = object : MediaBrowserCompat.ConnectionCallback() {
+        override fun onConnected() {
+            super.onConnected()
+            buildUI()
         }
 
-        override fun onServiceDisconnected(name: ComponentName?) {
-            musicServiceBound = false
+        override fun onConnectionFailed() {
+            super.onConnectionFailed()
+        }
+
+    }
+
+    private val audioControllerListener: AudioControllerView.OnClickListener =
+        object : AudioControllerView.OnClickListener {
+
+            override fun play() {
+                val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+                mediaController.transportControls.play()
+            }
+
+            override fun pause() {
+                val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+                mediaController.transportControls.pause()
+            }
+
+            override fun next() {
+                val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+                mediaController.transportControls.skipToNext()
+            }
+
+            override fun previous() {
+                val mediaController = MediaControllerCompat.getMediaController(requireActivity())
+                mediaController.transportControls.skipToPrevious()
+            }
+        }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mediaBrowser = MediaBrowserCompat(
+            requireContext(),
+            ComponentName(requireContext(), MusicService::class.java),
+            mediaConnectionCallBack, null
+
+        )
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (!mediaBrowser.isConnected) {
+            mediaBrowser.connect()
         }
     }
 
@@ -68,8 +144,9 @@ class AudioListPage : BaseFragment<AudioListPageFragmentBinding>(),
 
     override fun setUpViews() {
         binding.audioList.adapter = audioAdapter
-        binding.audioController.listener = this
-        binding.audioController.title = "Gokyul song"
+        binding.audioController.listener = audioControllerListener
+        binding.audioController.visibility = View.GONE
+
     }
 
     override fun observeData() {
@@ -89,48 +166,39 @@ class AudioListPage : BaseFragment<AudioListPageFragmentBinding>(),
 
             }
         }
-
-        audioControlViewModel.musicFileLiveData.observe(viewLifecycleOwner) {
-            binding.audioController.title = it.name
-            it.thumbnail?.let { bitmap ->
-                val paletteBuilder = Palette.Builder(bitmap)
-                val palette = paletteBuilder.generate()
-                val swatch = palette.dominantSwatch
-                swatch?.let { swatchP ->
-                    binding.audioController.setBackgroundColor(swatchP.rgb)
-                } ?: binding.audioController.setBackgroundColor(resources.getColor(R.color.blue))
-
-            } ?: binding.audioController.setBackgroundColor(resources.getColor(R.color.blue))
-            Glide.with(requireContext()).load(it.thumbnail)
-                .error(R.drawable.ic_baseline_music_note_24)
-                .into(binding.audioController.image)
-
+        viewModel.currentMusicFile.observe(viewLifecycleOwner) {
+            setUpUIForAudioController(it)
         }
     }
 
-
-    override fun play() {
-        if (musicServiceBound) {
-            musicService.play()
-        }
-    }
-
-    override fun pause() {
-        if (musicServiceBound) {
-            musicService.pause()
-        }
-    }
-
-    override fun next() {
-
-    }
-
-    override fun previous() {
-    }
 
     override fun onDestroy() {
-        requireActivity().unbindService(serviceConnection)
+        MediaControllerCompat.getMediaController(requireActivity())
+            ?.unregisterCallback(mediaControllerCallback)
+        mediaBrowser.disconnect()
         super.onDestroy()
+    }
+
+
+    private fun buildUI() {
+        val mediaController = MediaControllerCompat(requireContext(), mediaBrowser.sessionToken)
+        MediaControllerCompat.setMediaController(requireActivity(), mediaController)
+        mediaController.registerCallback(mediaControllerCallback)
+
+    }
+
+    private fun setUpUIForAudioController(musicFile: MusicFile?) {
+
+        if (musicFile != null) {
+            binding.audioController.title = musicFile.name
+            binding.audioController.artistName = musicFile.artistName ?: "Unknown"
+            binding.audioController.image=musicFile.thumbnail
+            binding.audioController.visibility = View.VISIBLE
+
+        } else {
+            binding.audioController.visibility = View.GONE
+        }
+
     }
 
 

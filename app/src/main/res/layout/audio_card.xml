@@ -18,6 +18,7 @@
             app:cardElevation="0dp">
 
             <ImageView
+                android:src="@drawable/ic_baseline_music_note_24"
                 android:id="@+id/audioImage"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
@@ -40,7 +41,7 @@
                 android:layout_marginEnd="5dp"
                 android:ellipsize="marquee"
                 android:singleLine="true"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
           <LinearLayout
               android:gravity="center"
