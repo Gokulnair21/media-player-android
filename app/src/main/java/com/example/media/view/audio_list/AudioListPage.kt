@@ -55,6 +55,10 @@ class AudioListPage : BaseFragment<AudioListPageFragmentBinding>() {
 
     private val mediaControllerCallback = object : MediaControllerCompat.Callback() {
 
+        override fun onMetadataChanged(metadata: MediaMetadataCompat?) {
+            super.onMetadataChanged(metadata)
+            //
+        }
 
         override fun onPlaybackStateChanged(state: PlaybackStateCompat?) {
             state?.let {

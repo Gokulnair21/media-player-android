@@ -8,6 +8,7 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.media.session.MediaSession
 import android.net.Uri
 import android.os.Bundle
 import android.os.ResultReceiver
@@ -200,6 +201,7 @@ class MusicService : MediaBrowserServiceCompat() {
         val data = gson.toJson(musicFile)
         edit.putString(Constant.CURRENT_MUSIC_FILE, data)
         edit.apply()
+        mediaSession.mediaSession
     }
 
     private fun setMediaPlaybackState(state: Int) {
